@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+   <title>Document</title>
+
+	<style type="text/css">
+         canvas{
+         	border:1px solid #ccc;
+         }
+	</style>
+</head>
+<body>
+	
+
+	<canvas width="900" height="600"></canvas>
+</body>
+
+<script type="text/javascript">
+	window.onload=function(){
+
+		var canvas=document.querySelector('canvas');
+
+		var ctx=canvas.getContext("2d");
+
+		
+
+		var bgimg=new Image();
+		bgimg.src='img/bgp.jpg';
+	   
+	    bgimg.onload=function(){
+	    	var img=new Image();
+
+		    img.src='img/TANK-G14D.png';
+            var picX=0;
+		    var picY=0;
+		    var picW;
+		    var picH;
+		    var index=0;
+		    var stepX=2;
+		    var stepY=2;
+		    var x=100;
+		    var y=100;
+		    var row=0;
+          img.onload=function(){ 
+            picW=img.width/4;
+            picH=img.height/4;
+            drawimg();
+		document.onkeydown=function(e){
+
+			switch(e.keyCode){
+
+				case 37://左
+				 row=1;
+				 x=x-stepX;
+				 drawimg();
+			    break;
+			    case 38://up
+                 row=3;
+                 y=y-stepY;
+                 drawimg();
+			    break;
+			    case 39://riht
+                 row=2;
+                 x=x+stepX;
+                 drawimg();
+			    break;
+			    case 40://down
+                 row=0;
+                 y=y+stepY;
+                 drawimg();
+			    break;
+			    default:
+			    break;
+
+
+			}
+           }
+			
+
+		}
+
+		function drawimg(){
+
+             ctx.clearRect(0, 0, canvas.width, canvas.height);
+             ctx.drawImage(bgimg, 0,0);
+              ctx.drawImage(img, picW*index, picH*row, picW, picH,x,y,picW,picH);
+
+               index++;
+	      
+				if(index==4){
+					index=0;
+
+				}
+		    }
+	  }
+		
+
+		
+	}
+	
+
+</script>
+    </body>
+</html>

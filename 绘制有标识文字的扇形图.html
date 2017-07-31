@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+
+     canvas{
+     	border:1px solid #ccc;
+     }
+
+	</style>
+</head>
+<body>
+	<canvas height="600" width="800"></canvas>
+</body>
+<script type="text/javascript">
+
+	var canvas=document.querySelector('canvas');
+
+	var ctx=canvas.getContext("2d");
+
+
+    var data=[
+      {name:'后端',count:30},
+      {name:'前端',count:40},
+      {name:'美工',count:10},
+      {name:'产品经理',count:60},
+      {name:'数据库管理员',count:20},
+      {name:'测试',count:44},
+    ]
+   var sum=0;
+   var x=canvas.width/2;
+   var y=canvas.height/2;
+     data.forEach(function(val,index){
+
+     	sum+=val.count;
+     })
+   var angles=data.map(function(val,index){
+
+      angle=val.count/sum*360;
+
+      return angle;
+
+   })
+   var startAngle=-90;
+   for(var i=0;i<data.length;i++){
+
+   	ctx.beginPath();
+   	ctx.moveTo(x, y);
+   	ctx.arc(x, y, 100, covertAngle(startAngle), covertAngle(startAngle+angles[i]));
+   	ctx.fillStyle=randomColor();
+    ctx.fill();
+    ctx.textBaseLine="bottom"
+    var text=data[i].name;
+    var textwidth=ctx.measureText(text).width;
+
+
+    var x1=x+Math.cos(covertAngle(angles[i]/2+startAngle))*130;
+    var y1=y+Math.sin(covertAngle(angles[i]/2+startAngle))*130;
+    
+
+    if(x>x1){
+    	textwidth=-textwidth;
+    	ctx.textAlign='right';
+    }
+    
+    ctx.moveTo(x, y);
+    ctx.lineTo(x1, y1);
+    ctx.lineTo(x1+textwidth,y1);
+    ctx.strokeStyle=ctx.fillStyle;
+    ctx.stroke();
+    ctx.textBaseline='bottom';
+    ctx.fillText(text, x1, y1)
+    
+    startAngle+=angles[i];
+   }
+
+    function randomColor(){
+
+    	var r=parseInt(Math.random()*255);
+    	var g=parseInt(Math.random()*255);
+    	var b=parseInt(Math.random()*255);
+
+    	return "rgb("+r+","+g+","+b+")"
+    }
+	function covertAngle(angle){
+
+		return Math.PI/180*angle;
+	}
+</script>
+</html>

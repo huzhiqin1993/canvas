@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+
+     canvas{
+     	border:1px solid #ccc;
+     }
+
+	</style>
+</head>
+<body>
+	<canvas height="600" width="800"></canvas>
+</body>
+<script type="text/javascript">
+	var canvas=document.querySelector('canvas');
+
+	var ctx=canvas.getContext("2d");
+    
+
+    var pd=20;
+
+    var h=20;
+    var w=20;
+    var ch=canvas.height;
+    var cw=canvas.width;
+    //画坐标系
+    ctx.moveTo(pd, pd);
+
+    ctx.lineTo(pd,ch-pd);
+
+    ctx.lineTo(cw-pd,ch-pd);
+    ctx.stroke();
+    //画坐标系上的箭头
+    ctx.beginPath();
+    ctx.moveTo(pd, pd);
+    ctx.lineTo(pd-h/2,pd+h);
+    ctx.lineTo(pd,pd+h/2);
+
+    ctx.lineTo(pd+h/2,pd+h);
+    ctx.closePath();
+    
+    ctx.moveTo(cw-pd,ch-pd);
+    ctx.lineTo(cw-pd-w,ch-pd+h/2);
+    ctx.lineTo(cw-pd-w/2,ch-pd);
+    ctx.lineTo(cw-pd-w,ch-pd-h/2);
+    
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+
+
+
+    //画点
+    
+    var data=[20,145,69,250,690,760,438,99,380]
+     
+    var maxVal=Math.max.apply(null,data);
+     console.log(maxVal)
+    var rate=(ch-2*pd)/maxVal;
+
+    var pointw=(cw-2*pd)/data.length;
+    var points=[];
+    data.forEach(function(val,index){
+
+     var pw=pointw*index;
+
+     var ph=val*rate;
+
+     var p=covertpoint(pw,ph);
+     points.push(p);
+     drawpoint(p)
+
+    })
+    //连线
+    ctx.moveTo(points[0].x,points[0].y)
+    points.forEach(function(p,index){
+
+    ctx.lineTo(p.x,p.y)
+
+    })
+    ctx.stroke()
+
+    function covertpoint(x,y){
+      var x1=x+pd;
+      var y1=ch-pd-y;
+      return{
+      	x:x1,
+      	y:y1
+      }
+    }
+
+    function drawpoint(point,pointwidth){
+
+    	var pw=pointwidth||8;
+        ctx.beginPath();
+    	ctx.moveTo(point.x-pw/2, point.y-pw/2);
+    	ctx.lineTo(point.x+pw/2, point.y-pw/2);
+    	ctx.lineTo(point.x+pw/2, point.y+pw/2);
+    	ctx.lineTo(point.x-pw/2, point.y+pw/2);
+    	ctx.closePath();
+    	ctx.stroke();
+    	ctx.fill();
+    	ctx.beginPath();
+    }
+
+    // var p=covertpoint(100,100)
+    // drawpoint(p)
+
+    // console.log( covertpoint(40,50))
+</script>
+</html>
